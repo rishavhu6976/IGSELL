@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AccVault — Premium Account Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- fallback if Clash not available -->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════
+   RESET
+═══════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --bg:       #06080c;
+  --bg1:      #0a0d14;
+  --bg2:      #0f1420;
+  --bg3:      #141b28;
+  --card:     #111828;
+  --card2:    #161f2e;
+  --border:   #1c2535;
+  --border2:  #243044;
+  --border3:  #2e3d55;
+  --gold:     #e8b84b;
+  --gold2:    #f5d070;
+  --gold3:    #c4932a;
+  --gold4:    #7a5715;
+  --text:     #e2e8f2;
+  --text2:    #8899b0;
+  --text3:    #4a5a72;
+  --green:    #2ecf85;
+  --red:      #e55353;
+  --blue:     #4fa3f7;
+  --r:        14px;
+  --r2:       22px;
+}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.65;
+  min-height:100vh;overflow-x:hidden;
+}
+
+/* ── GRAIN ── */
+body::after{
+  content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.5;mix-blend-mode:overlay;
+}
+
+/* ── MESH BACKGROUND ── */
+.mesh{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 10%, rgba(232,184,75,.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(79,163,247,.04) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 60% at 50% 50%, rgba(6,8,12,1) 40%, transparent 100%);
+}
+
+/* ═══════════════════════════════════════
+   TYPOGRAPHY
+═══════════════════════════════════════ */
+.display{font-family:'Bebas Neue',sans-serif;letter-spacing:1px}
+.mono{font-family:'DM Mono',monospace}
+
+/* ═══════════════════════════════════════
+   NAV
+═══════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;
+  background:rgba(6,8,12,.88);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:24px;letter-spacing:2px;
+  color:var(--gold2);text-decoration:none;
+  display:flex;align-items:center;gap:10px;
+}
+.logo-mark{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--gold4),var(--gold));
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;
+}
+.nav-right{display:flex;align-items:center;gap:12px}
+.nav-user{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 14px;border-radius:100px;
+  background:rgba(232,184,75,.1);
+  border:1px solid rgba(232,184,75,.2);
+  font-size:13px;color:var(--gold2);
+  font-family:'DM Mono',monospace;
+}
+.nav-user-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 6px var(--green);
+}
+
+/* ═══════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 26px;border-radius:var(--r);border:none;cursor:pointer;
+  font-weight:600;font-size:14px;text-decoration:none;
+  font-family:'DM Sans',sans-serif;transition:all .2s;white-space:nowrap;
+}
+.btn-gold{
+  background:linear-gradient(135deg,var(--gold4) 0%,var(--gold) 60%,var(--gold2) 100%);
+  color:#1c0d00;font-weight:700;
+  box-shadow:0 4px 20px rgba(232,184,75,.3);
+}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(232,184,75,.4)}
+.btn-outline{
+  background:transparent;color:var(--text);
+  border:1px solid var(--border2);
+}
+.btn-outline:hover{background:rgba(255,255,255,.05);border-color:var(--border3)}
+.btn-ghost{
+  background:rgba(255,255,255,.05);color:var(--text2);
+  border:1px solid var(--border);
+}
+.btn-ghost:hover{background:rgba(255,255,255,.08);color:var(--text)}
+.btn-red{background:rgba(229,83,83,.15);color:var(--red);border:1px solid rgba(229,83,83,.3)}
+.btn-red:hover{background:rgba(229,83,83,.25)}
+.btn-sm{padding:8px 16px;font-size:12.5px}
+.btn-xs{padding:6px 12px;font-size:11.5px}
+.btn-full{width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+
+/* ═══════════════════════════════════════
+   PAGE ROUTER
+═══════════════════════════════════════ */
+.page{display:none;position:relative;z-index:1;min-height:100vh;padding-top:64px}
+.page.active{display:block}
+
+/* ═══════════════════════════════════════
+   LOGIN PAGE
+═══════════════════════════════════════ */
+#page-login{
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;padding:80px 20px;
+}
+#page-login.active{display:flex}
+
+.login-wrap{width:100%;max-width:440px}
+
+.login-logo{
+  text-align:center;margin-bottom:40px;
+}
+.login-logo-icon{
+  width:72px;height:72px;border-radius:20px;margin:0 auto 16px;
+  background:linear-gradient(135deg,var(--gold4),var(--gold));
+  display:flex;align-items:center;justify-content:center;
+  font-size:34px;
+  box-shadow:0 20px 60px rgba(232,184,75,.25);
+}
+.login-logo h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:38px;letter-spacing:3px;color:var(--gold2);
+}
+.login-logo p{font-size:13px;color:var(--text3);margin-top:4px}
+
+.login-card{
+  background:var(--card);
+  border:1px solid var(--border2);
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 40px 100px rgba(0,0,0,.6);
+}
+.login-tabs{
+  display:flex;border-bottom:1px solid var(--border);
+}
+.login-tab{
+  flex:1;padding:16px;text-align:center;
+  font-size:13px;font-weight:600;color:var(--text3);
+  cursor:pointer;transition:all .2s;
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.5px;
+}
+.login-tab.active{color:var(--gold2);border-bottom-color:var(--gold)}
+
+.login-step{display:none;padding:32px}
+.login-step.active{display:block}
+
+.login-step h2{font-size:20px;font-weight:700;margin-bottom:6px}
+.login-step p{font-size:13.5px;color:var(--text2);margin-bottom:24px;line-height:1.6}
+
+.form-group{margin-bottom:18px}
+.form-group label{
+  display:block;margin-bottom:8px;
+  font-size:11.5px;font-family:'DM Mono',monospace;
+  color:var(--text3);text-transform:uppercase;letter-spacing:1px;
+}
+.form-group .req{color:var(--gold)}
+.inp{
+  width:100%;background:var(--bg2);
+  border:1px solid var(--border);color:var(--text);
+  border-radius:12px;padding:13px 16px;
+  font-size:14px;font-family:'DM Sans',sans-serif;
+  outline:none;transition:border-color .2s;
+}
+.inp:focus{border-color:var(--gold3)}
+.inp::placeholder{color:var(--text3)}
+.inp-prefix{position:relative}
+.inp-prefix .pfx{
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  color:var(--text3);font-size:15px;pointer-events:none;
+}
+.inp-prefix input{padding-left:32px}
+
+.otp-grid{display:flex;gap:10px}
+.otp-input{
+  flex:1;background:var(--bg2);
+  border:1px solid var(--border);color:var(--text);
+  border-radius:12px;padding:16px 10px;
+  font-size:24px;font-family:'DM Mono',monospace;
+  text-align:center;outline:none;transition:border-color .2s;
+  font-weight:500;
+}
+.otp-input:focus{border-color:var(--gold);background:rgba(232,184,75,.05)}
+
+.otp-timer{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;color:var(--text3);margin-top:10px;
+  font-family:'DM Mono',monospace;
+}
+.otp-timer span{color:var(--gold2)}
+
+.login-divider{
+  display:flex;align-items:center;gap:12px;margin:20px 0;
+  font-size:12px;color:var(--text3);
+}
+.login-divider::before,.login-divider::after{
+  content:'';flex:1;height:1px;background:var(--border);
+}
+
+.tg-hint{
+  text-align:center;margin-top:20px;
+  font-size:12.5px;color:var(--text3);line-height:1.7;
+}
+.tg-hint a{color:var(--gold2);text-decoration:none}
+
+/* ═══════════════════════════════════════
+   SHOP PAGE
+═══════════════════════════════════════ */
+.shop-hero{
+  padding:60px 40px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;
+}
+.shop-hero-text h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(44px,5vw,72px);
+  letter-spacing:2px;line-height:1;
+  margin-bottom:8px;
+}
+.shop-hero-text h1 em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.shop-hero-text p{font-size:15px;color:var(--text2);max-width:420px}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:5px 14px;border-radius:100px;margin-bottom:14px;
+  background:rgba(46,207,133,.1);border:1px solid rgba(46,207,133,.2);
+  font-size:11.5px;font-family:'DM Mono',monospace;color:var(--green);
+  text-transform:uppercase;letter-spacing:1px;
+}
+.hero-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── STATS ROW ── */
+.stats-row{
+  display:flex;margin:0 40px 40px;
+  border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;
+  background:var(--card);
+}
+.stat-box{
+  flex:1;padding:22px 28px;border-right:1px solid var(--border);
+  min-width:0;
+}
+.stat-box:last-child{border-right:none}
+.stat-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:34px;letter-spacing:1px;color:var(--gold2);line-height:1;margin-bottom:4px;
+}
+.stat-lbl{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px}
+
+/* ── MAIN CONTENT ── */
+.shop-body{max-width:1320px;margin:0 auto;padding:0 40px 100px}
+
+.sec-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:24px;flex-wrap:wrap;gap:12px;
+}
+.sec-tag{
+  font-size:11px;font-family:'DM Mono',monospace;color:var(--gold);
+  text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;display:block;
+}
+.sec-title{font-size:22px;font-weight:800;letter-spacing:-.3px}
+
+/* ── YEAR CARDS ── */
+.year-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:14px;margin-bottom:56px;
+}
+.year-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r2);padding:24px 20px;cursor:pointer;
+  transition:all .25s;position:relative;overflow:hidden;
+}
+.year-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(232,184,75,.08),transparent 60%);
+  opacity:0;transition:opacity .3s;
+}
+.year-card:hover{border-color:var(--gold3);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.year-card:hover::before{opacity:1}
+.year-card.active{border-color:var(--gold);background:rgba(232,184,75,.08)}
+.year-card.active::before{opacity:1}
+.year-num{
+  font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:1px;
+  color:var(--gold2);line-height:1;margin-bottom:8px;
+}
+.year-cnt{font-size:11.5px;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase}
+.year-ping{
+  position:absolute;top:16px;right:16px;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 0 2px rgba(46,207,133,.25);
+  animation:pingaim 2s ease-in-out infinite;
+}
+@keyframes pingaim{0%,100%{box-shadow:0 0 0 2px rgba(46,207,133,.25)}50%{box-shadow:0 0 0 5px rgba(46,207,133,.1)}}
+.year-from{font-size:11px;color:var(--gold3);font-family:'DM Mono',monospace;margin-top:4px}
+
+/* ── FILTER BAR ── */
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 15px;border-radius:100px;
+  border:1px solid var(--border);background:var(--card);
+  color:var(--text2);font-size:12.5px;cursor:pointer;transition:all .2s;
+}
+.chip:hover{border-color:var(--border3);color:var(--text)}
+.chip.active{border-color:var(--gold);color:var(--gold2);background:rgba(232,184,75,.1)}
+.sort-sel{
+  margin-left:auto;background:var(--card);border:1px solid var(--border);
+  color:var(--text);border-radius:10px;padding:8px 14px;font-size:12.5px;
+  font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;
+}
+.sort-sel:focus{border-color:var(--gold3)}
+
+/* ── ACCOUNT GRID ── */
+.acc-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));
+  gap:18px;margin-bottom:60px;
+}
+
+/* ── ACCOUNT CARD ── */
+.acc-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r2);overflow:hidden;display:flex;flex-direction:column;
+  transition:all .25s;animation:fadeUp .35s ease both;
+}
+.acc-card:hover{border-color:var(--border3);transform:translateY(-4px);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.card-top{
+  padding:18px 20px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+.plat-wrap{display:flex;align-items:center;gap:12px}
+.plat-icon{
+  width:40px;height:40px;border-radius:12px;
+  background:var(--bg2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:21px;
+}
+.plat-name{font-weight:700;font-size:15px}
+.plat-id{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:1px}
+.priv-badge{
+  display:flex;align-items:center;gap:4px;
+  padding:4px 10px;border-radius:100px;
+  font-size:10.5px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.5px;font-weight:600;
+}
+.priv-pub{background:rgba(46,207,133,.1);color:var(--green);border:1px solid rgba(46,207,133,.2)}
+.priv-prv{background:rgba(79,163,247,.1);color:var(--blue);border:1px solid rgba(79,163,247,.2)}
+
+.card-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:10px;padding:16px 20px;border-bottom:1px solid var(--border);
+}
+.cs{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 8px;text-align:center}
+.cs-val{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.5px;margin-bottom:2px}
+.cs-lbl{font-size:9.5px;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.5px}
+
+.card-info{padding:12px 20px 0}
+.card-date{font-size:12px;color:var(--text3);font-family:'DM Mono',monospace}
+.card-desc{
+  font-size:12.5px;color:var(--text3);margin-top:8px;line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+
+.card-bot{
+  padding:14px 20px 18px;margin-top:auto;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.card-price{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--gold2)}
+.card-price sub{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);font-weight:400;display:block;letter-spacing:0;line-height:1}
+.card-btns{display:flex;gap:8px;flex:1;justify-content:flex-end}
+
+/* ── EMPTY / LOADING ── */
+.empty{text-align:center;padding:70px 20px;color:var(--text3)}
+.empty-ico{font-size:44px;opacity:.4;margin-bottom:14px}
+.loading-wrap{display:flex;align-items:center;justify-content:center;padding:60px;gap:12px;color:var(--text3);font-family:'DM Mono',monospace;font-size:12.5px}
+.spin{width:18px;height:18px;border:2px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ═══════════════════════════════════════
+   MODAL
+═══════════════════════════════════════ */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.78);
+  backdrop-filter:blur(10px);z-index:800;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;visibility:hidden;transition:all .3s;
+}
+.overlay.open{opacity:1;visibility:visible}
+.modal{
+  background:var(--bg1);border:1px solid var(--border2);
+  border-radius:26px;width:100%;max-width:560px;
+  max-height:92vh;overflow-y:auto;
+  transform:translateY(18px) scale(.97);transition:transform .3s;
+  box-shadow:0 50px 120px rgba(0,0,0,.8);
+}
+.overlay.open .modal{transform:translateY(0) scale(1)}
+.modal-hd{
+  padding:26px 28px 20px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:flex-start;
+  position:sticky;top:0;background:var(--bg1);z-index:2;border-radius:26px 26px 0 0;
+}
+.modal-title{font-size:20px;font-weight:800}
+.modal-sub{font-size:12px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:3px}
+.modal-close{
+  width:30px;height:30px;border:none;cursor:pointer;
+  background:rgba(255,255,255,.07);color:var(--text2);
+  border-radius:8px;font-size:16px;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;flex-shrink:0;
+}
+.modal-close:hover{background:rgba(255,255,255,.12);color:var(--text)}
+.modal-bd{padding:24px 28px 28px}
+
+/* ── DETAIL MODAL ── */
+.detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.dg{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px 10px;text-align:center}
+.dg-val{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:.5px;margin-bottom:4px;color:var(--gold2)}
+.dg-lbl{font-size:9.5px;color:var(--text3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px}
+.detail-row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);font-size:13.5px}
+.detail-row:last-child{border:none}
+.dr-k{color:var(--text3);font-family:'DM Mono',monospace;font-size:11.5px}
+.dr-v{color:var(--text);font-weight:500}
+.price-showcase{
+  background:linear-gradient(135deg,rgba(232,184,75,.1),rgba(232,184,75,.04));
+  border:1px solid rgba(232,184,75,.22);
+  border-radius:16px;padding:22px;text-align:center;margin:18px 0;
+}
+.price-big{font-family:'Bebas Neue',sans-serif;font-size:50px;letter-spacing:2px;color:var(--gold2);line-height:1}
+.price-hint{font-size:12px;color:var(--text3);margin-top:4px}
+
+/* ── ORDER MODAL ── */
+.steps-bar{display:flex;gap:8px;margin-bottom:22px}
+.step-dot{flex:1;height:3px;border-radius:100px;background:var(--border);transition:background .3s}
+.step-dot.on{background:var(--gold)}
+.order-form{display:flex;flex-direction:column;gap:14px}
+.form-hint{font-size:11.5px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace}
+.order-summary-box{
+  background:rgba(232,184,75,.07);border:1px solid rgba(232,184,75,.18);
+  border-radius:14px;padding:18px;margin-bottom:18px;
+}
+.final-warn{
+  background:rgba(229,83,83,.07);border:1px solid rgba(229,83,83,.2);
+  border-radius:12px;padding:13px 16px;font-size:13px;color:var(--text2);margin-bottom:16px;
+}
+
+/* ── MY ORDERS ── */
+.orders-list{display:flex;flex-direction:column;gap:12px}
+.order-row{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px 18px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.order-icon{font-size:22px;flex-shrink:0}
+.order-info{flex:1;min-width:0}
+.order-id{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3)}
+.order-plat{font-weight:700;font-size:14px;margin:2px 0}
+.order-meta{font-size:12px;color:var(--text3)}
+.order-price{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--gold2)}
+.status-badge{
+  padding:4px 10px;border-radius:100px;font-size:11px;
+  font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.5px;
+}
+.sb-pending{background:rgba(232,184,75,.12);color:var(--gold);border:1px solid rgba(232,184,75,.2)}
+.sb-completed{background:rgba(46,207,133,.12);color:var(--green);border:1px solid rgba(46,207,133,.2)}
+.sb-cancelled{background:rgba(229,83,83,.12);color:var(--red);border:1px solid rgba(229,83,83,.2)}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+.toast{
+  position:fixed;bottom:28px;right:28px;z-index:900;
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:14px;padding:14px 18px;
+  display:flex;align-items:center;gap:12px;
+  font-size:13.5px;max-width:340px;
+  box-shadow:0 20px 50px rgba(0,0,0,.6);
+  transform:translateY(90px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);
+}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{border-color:rgba(46,207,133,.35)}
+.toast.err{border-color:rgba(229,83,83,.35)}
+#ti{font-size:20px}
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+footer{
+  position:relative;z-index:1;border-top:1px solid var(--border);
+  padding:36px 40px;display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:16px;
+}
+.foot-brand{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--gold2)}
+.foot-links{display:flex;gap:20px}
+.foot-links a{font-size:12.5px;color:var(--text3);text-decoration:none;transition:color .2s}
+.foot-links a:hover{color:var(--text)}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media(max-width:768px){
+  nav{padding:0 18px}
+  .shop-hero{padding:40px 18px 28px}
+  .stats-row{margin:0 18px 28px;flex-wrap:wrap}
+  .stat-box{min-width:calc(50% - 1px);border-right:none;border-bottom:1px solid var(--border)}
+  .stat-box:nth-child(odd){border-right:1px solid var(--border)}
+  .stat-box:last-child,.stat-box:nth-last-child(2):nth-child(odd){border-bottom:none}
+  .shop-body{padding:0 18px 80px}
+  .year-grid{grid-template-columns:repeat(2,1fr)}
+  .acc-grid{grid-template-columns:1fr}
+  footer{padding:24px 18px;flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="mesh"></div>
+
+<!-- ═══════ NAV ═══════ -->
+<nav>
+  <a href="#" class="logo" onclick="showShop();return false">
+    <div class="logo-mark">🔐</div>ACCVAULT
+  </a>
+  <div class="nav-right" id="nav-right">
+    <a href="https://t.me/Acc_selll_bot" target="_blank" class="btn btn-outline btn-sm">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.02 9.53c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.883.691z"/></svg>
+      @Acc_selll_bot
+    </a>
+    <button class="btn btn-gold btn-sm" id="nav-login-btn" onclick="showLogin()">Login</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════
+     LOGIN PAGE
+═══════════════════════════════════ -->
+<div class="page active" id="page-login">
+  <div class="login-wrap">
+    <div class="login-logo">
+      <div class="login-logo-icon">🔐</div>
+      <h1>ACCVAULT</h1>
+      <p>Premium Social Media Account Marketplace</p>
+    </div>
+
+    <div class="login-card">
+      <div class="login-tabs">
+        <div class="login-tab active" id="tab-login" onclick="switchTab('login')">Login</div>
+        <div class="login-tab" id="tab-browse" onclick="switchTab('browse')">Browse First</div>
+      </div>
+
+      <!-- STEP 1: Enter TG username -->
+      <div class="login-step active" id="ls-1">
+        <h2>Enter Telegram Username</h2>
+        <p>We'll send a 6-digit OTP to your Telegram via <strong>@Acc_selll_bot</strong>. Start the bot first if you haven't.</p>
+
+        <div class="form-group">
+          <label>Telegram Username <span class="req">*</span></label>
+          <div class="inp-prefix">
+            <span class="pfx">@</span>
+            <input class="inp" id="login-uname" type="text" placeholder="yourusername"
+              onkeydown="if(event.key==='Enter')requestOTP()">
+          </div>
+        </div>
+
+        <button class="btn btn-gold btn-full" onclick="requestOTP()" id="otp-btn">
+          Send OTP via Telegram →
+        </button>
+
+        <div class="login-divider">or</div>
+
+        <button class="btn btn-ghost btn-full" onclick="showShop()">
+          Browse Without Login
+        </button>
+
+        <div class="tg-hint">
+          Don't have a username? <a href="https://t.me/Acc_selll_bot" target="_blank">Start @Acc_selll_bot</a> first,<br>
+          then come back here to login.
+        </div>
+      </div>
+
+      <!-- STEP 2: Enter OTP -->
+      <div class="login-step" id="ls-2">
+        <h2>Enter OTP</h2>
+        <p>Check your Telegram — <strong @Acc_selll_bot>@Acc_selll_bot</strong> just sent you a 6-digit code.</p>
+
+        <div class="form-group">
+          <label>6-digit OTP <span class="req">*</span></label>
+          <div class="otp-grid" id="otp-boxes"></div>
+          <div class="otp-timer">
+            <span id="otp-timer-label">Expires in <span id="otp-countdown">5:00</span></span>
+            <button style="background:none;border:none;cursor:pointer;color:var(--gold2);font-family:'DM Mono',monospace;font-size:12px"
+              onclick="backToStep1()">← Change username</button>
+          </div>
+        </div>
+
+        <button class="btn btn-gold btn-full" onclick="verifyOTP()" id="verify-btn">Verify & Login</button>
+
+        <div class="tg-hint" style="margin-top:16px">
+          Didn't receive it? <a href="#" onclick="requestOTP();return false">Resend OTP</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     SHOP PAGE
+═══════════════════════════════════ -->
+<div class="page" id="page-shop">
+
+  <div class="shop-hero">
+    <div class="shop-hero-text">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span id="hero-avail">— accounts live</span>
+      </div>
+      <h1>BUY <em>AGED</em><br>ACCOUNTS</h1>
+      <p>Verified, high-quality social media accounts with real history. Every account guaranteed.</p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap" id="hero-actions">
+      <a href="https://t.me/Acc_selll_bot" target="_blank" class="btn btn-outline">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.02 9.53c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.883.691z"/></svg>
+        @Acc_selll_bot
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num" id="s-avail">—</div><div class="stat-lbl">Available</div></div>
+    <div class="stat-box"><div class="stat-num" id="s-sold">—</div><div class="stat-lbl">Sold</div></div>
+    <div class="stat-box"><div class="stat-num" id="s-plats">—</div><div class="stat-lbl">Platforms</div></div>
+    <div class="stat-box"><div class="stat-num">100%</div><div class="stat-lbl">Guaranteed</div></div>
+  </div>
+
+  <div class="shop-body">
+
+    <!-- YEAR BROWSE -->
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag">Filter by Year</span>
+        <div class="sec-title">Account Creation Year</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="clear-year-btn" onclick="clearYear()" style="display:none">Clear Filter ✕</button>
+    </div>
+    <div class="year-grid" id="year-grid">
+      <div class="loading-wrap"><div class="spin"></div>Loading...</div>
+    </div>
+
+    <!-- ACCOUNTS -->
+    <div id="acc-section">
+      <div class="sec-head">
+        <div>
+          <span class="sec-tag" id="acc-tag">All Accounts</span>
+          <div class="sec-title" id="acc-title">Available Now</div>
+        </div>
+      </div>
+      <div class="filter-bar" id="filter-bar">
+        <button class="chip active" onclick="setPlatform(this,'')">All Platforms</button>
+        <select class="sort-sel" id="sort-sel" onchange="loadAccounts()">
+          <option value="id">Newest</option>
+          <option value="price">Price ↑</option>
+          <option value="price_desc">Price ↓</option>
+          <option value="followers">Most Followers</option>
+        </select>
+      </div>
+      <div class="acc-grid" id="acc-grid">
+        <div class="loading-wrap"><div class="spin"></div>Loading accounts...</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div>
+      <div class="foot-brand">ACCVAULT</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:4px">Premium aged social media accounts</div>
+    </div>
+    <div class="foot-links">
+      <a href="https://t.me/Acc_selll_bot" target="_blank">Telegram Bot</a>
+      <a href="#">Support</a>
+      <a href="#">Terms</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════ DETAIL MODAL ═══════ -->
+<div class="overlay" id="m-detail">
+  <div class="modal">
+    <div class="modal-hd">
+      <div><div class="modal-title" id="md-title">Account Details</div><div class="modal-sub" id="md-sub"></div></div>
+      <button class="modal-close" onclick="closeM('m-detail')">✕</button>
+    </div>
+    <div class="modal-bd" id="md-body"></div>
+  </div>
+</div>
+
+<!-- ═══════ ORDER MODAL ═══════ -->
+<div class="overlay" id="m-order">
+  <div class="modal">
+    <div class="modal-hd">
+      <div><div class="modal-title">Place Order</div><div class="modal-sub" id="mo-sub"></div></div>
+      <button class="modal-close" onclick="closeM('m-order')">✕</button>
+    </div>
+    <div class="modal-bd">
+      <div class="steps-bar">
+        <div class="step-dot on" id="sd1"></div>
+        <div class="step-dot"    id="sd2"></div>
+      </div>
+      <!-- STEP 1 -->
+      <div id="os1">
+        <p style="font-size:13.5px;color:var(--text2);margin-bottom:18px">
+          Your details will be shared with admin to complete your purchase.</p>
+        <div class="order-form">
+          <div class="form-group">
+            <label>Full Name <span class="req">*</span></label>
+            <input class="inp" id="o-name" placeholder="Your full name">
+          </div>
+          <div class="form-group">
+            <label>Note (optional)</label>
+            <input class="inp" id="o-note" placeholder="Any special instructions...">
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:18px">
+          <button class="btn btn-ghost" style="flex:1" onclick="closeM('m-order')">Cancel</button>
+          <button class="btn btn-gold" style="flex:2" onclick="orderStep2()">Continue →</button>
+        </div>
+      </div>
+      <!-- STEP 2 -->
+      <div id="os2" style="display:none">
+        <div class="order-summary-box" id="o-summary"></div>
+        <div class="final-warn">⚠️ <strong>This is your final confirmation.</strong> Once placed, the account will be reserved for you and admin will contact you on Telegram.</div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-ghost" style="flex:1" onclick="orderBack()">← Back</button>
+          <button class="btn btn-gold" style="flex:2" id="place-btn" onclick="doOrder()">✅ Confirm Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ ORDERS MODAL ═══════ -->
+<div class="overlay" id="m-orders">
+  <div class="modal">
+    <div class="modal-hd">
+      <div><div class="modal-title">My Orders</div><div class="modal-sub">Your purchase history</div></div>
+      <button class="modal-close" onclick="closeM('m-orders')">✕</button>
+    </div>
+    <div class="modal-bd" id="orders-body"></div>
+  </div>
+</div>
+
+<!-- ═══════ TOAST ═══════ -->
+<div class="toast" id="toast"><span id="ti"></span><span id="tm"></span></div>
+
+<script>
+/* ════════════════════════════════
+   CONFIG
+════════════════════════════════ */
+const API  = "http://13.53.46.42:5000";
+const BOT  = "https://t.me/Acc_selll_bot";
+
+/* ════════════════════════════════
+   STATE
+════════════════════════════════ */
+let session   = localStorage.getItem("sv_token")    || "";
+let username  = localStorage.getItem("sv_user")     || "";
+let fullname  = localStorage.getItem("sv_name")     || "";
+let activeYear = null, activePlat = "", accounts = [];
+let orderAccId = null;
+let otpTimer = null;
+
+const PLAT_ICONS = {
+  instagram:"📸", twitter:"🐦", tiktok:"🎵", facebook:"👤",
+  youtube:"▶️", snapchat:"👻", linkedin:"💼", reddit:"🤖",
+  telegram:"✈️", discord:"🎮", twitch:"🟣", pinterest:"📌",
+  threads:"🧵", x:"🐦"
+};
+function pIcon(n){
+  const k=(n||"").toLowerCase();
+  for(const p in PLAT_ICONS) if(k.includes(p)) return PLAT_ICONS[p];
+  return "📱";
+}
+function inr(n){ return "₹"+parseFloat(n).toLocaleString("en-IN",{maximumFractionDigits:0}) }
+function fmt(n){
+  n=parseInt(n);
+  if(n>=1e6) return (n/1e6).toFixed(1).replace(/\.0$/,"")+"M";
+  if(n>=1e3) return (n/1e3).toFixed(1).replace(/\.0$/,"")+"K";
+  return ""+n;
+}
+
+/* ════════════════════════════════
+   TOAST
+════════════════════════════════ */
+function toast(msg,type="ok"){
+  const t=document.getElementById("toast");
+  document.getElementById("ti").textContent = type==="ok"?"✅":"❌";
+  document.getElementById("tm").textContent = msg;
+  t.className=`toast ${type} show`;
+  clearTimeout(t._t);
+  t._t=setTimeout(()=>t.classList.remove("show"),4000);
+}
+
+/* ════════════════════════════════
+   MODALS
+════════════════════════════════ */
+function openM(id){document.getElementById(id).classList.add("open")}
+function closeM(id){document.getElementById(id).classList.remove("open")}
+document.querySelectorAll(".overlay").forEach(o=>{
+  o.addEventListener("click",e=>{ if(e.target===o) o.classList.remove("open") });
+});
+
+/* ════════════════════════════════
+   PAGE ROUTING
+════════════════════════════════ */
+function showPage(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+function showLogin(){ showPage("page-login") }
+function showShop(){ showPage("page-shop"); loadStats(); loadYears(); loadAccounts(); updateNav(); }
+
+function updateNav(){
+  const r=document.getElementById("nav-right");
+  if(session && username){
+    r.innerHTML=`
+      <div class="nav-user"><span class="nav-user-dot"></span>@${username}</div>
+      <button class="btn btn-ghost btn-sm" onclick="openOrders()">📦 Orders</button>
+      <button class="btn btn-outline btn-sm" onclick="doLogout()">Logout</button>`;
+  } else {
+    r.innerHTML=`
+      <a href="${BOT}" target="_blank" class="btn btn-outline btn-sm">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.02 9.53c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.883.691z"/></svg>
+        @Acc_selll_bot
+      </a>
+      <button class="btn btn-gold btn-sm" onclick="showLogin()">Login</button>`;
+  }
+  const heroA=document.getElementById("hero-actions");
+  if(heroA && session){
+    heroA.innerHTML=`
+      <button class="btn btn-gold" onclick="openOrders()">📦 My Orders</button>
+      <a href="${BOT}" target="_blank" class="btn btn-outline">@Acc_selll_bot</a>`;
+  }
+}
+
+/* ════════════════════════════════
+   LOGIN TABS
+════════════════════════════════ */
+function switchTab(t){
+  document.getElementById("tab-login").classList.toggle("active",t==="login");
+  document.getElementById("tab-browse").classList.toggle("active",t==="browse");
+  if(t==="browse") showShop();
+}
+
+/* ════════════════════════════════
+   OTP FLOW
+════════════════════════════════ */
+function buildOTPBoxes(){
+  const grid=document.getElementById("otp-boxes");
+  grid.innerHTML="";
+  for(let i=0;i<6;i++){
+    const inp=document.createElement("input");
+    inp.className="otp-input"; inp.maxLength=1; inp.inputMode="numeric";
+    inp.dataset.i=i;
+    inp.addEventListener("input",e=>{
+      if(e.target.value && i<5) grid.children[i+1].focus();
+    });
+    inp.addEventListener("keydown",e=>{
+      if(e.key==="Backspace"&&!e.target.value&&i>0) grid.children[i-1].focus();
+      if(e.key==="Enter") verifyOTP();
+    });
+    inp.addEventListener("paste",e=>{
+      e.preventDefault();
+      const paste=(e.clipboardData||window.clipboardData).getData("text").replace(/\D/g,"");
+      [...paste].slice(0,6).forEach((ch,j)=>{ if(grid.children[j]) grid.children[j].value=ch });
+      grid.children[Math.min(paste.length,5)].focus();
+    });
+    grid.appendChild(inp);
+  }
+}
+
+function startOTPTimer(sec=300){
+  clearInterval(otpTimer);
+  const el=document.getElementById("otp-countdown");
+  otpTimer=setInterval(()=>{
+    sec--;
+    const m=Math.floor(sec/60), s=sec%60;
+    el.textContent=`${m}:${s.toString().padStart(2,"0")}`;
+    if(sec<=0){ clearInterval(otpTimer); el.textContent="expired" }
+  },1000);
+}
+
+async function requestOTP(){
+  const uname=document.getElementById("login-uname").value.trim().replace(/^@/,"");
+  if(!uname){toast("Enter your Telegram username","err");return}
+  const btn=document.getElementById("otp-btn");
+  btn.disabled=true; btn.textContent="Sending...";
+  try{
+    const r=await fetch(`${API}/api/auth/request-otp`,{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({username:uname})});
+    const d=await r.json();
+    if(d.success){
+      buildOTPBoxes();
+      document.getElementById("ls-1").classList.remove("active");
+      document.getElementById("ls-2").classList.add("active");
+      startOTPTimer(300);
+      setTimeout(()=>document.getElementById("otp-boxes").children[0]?.focus(),100);
+    } else {
+      toast(d.error||"Failed","err");
+      if(d.bot) window.open(d.bot,"_blank");
+    }
+  } catch{ toast("Server unreachable. Is the backend running?","err") }
+  btn.disabled=false; btn.textContent="Send OTP via Telegram →";
+}
+
+function backToStep1(){
+  clearInterval(otpTimer);
+  document.getElementById("ls-2").classList.remove("active");
+  document.getElementById("ls-1").classList.add("active");
+}
+
+async function verifyOTP(){
+  const uname=document.getElementById("login-uname").value.trim().replace(/^@/,"");
+  const boxes=document.getElementById("otp-boxes").children;
+  const code=[...boxes].map(b=>b.value).join("");
+  if(code.length<6){toast("Enter the 6-digit OTP","err");return}
+  const btn=document.getElementById("verify-btn");
+  btn.disabled=true; btn.textContent="Verifying...";
+  try{
+    const r=await fetch(`${API}/api/auth/verify-otp`,{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({username:uname,otp:code})});
+    const d=await r.json();
+    if(d.success){
+      session=d.session_token; username=d.username; fullname=d.full_name||d.username;
+      localStorage.setItem("sv_token",session);
+      localStorage.setItem("sv_user",username);
+      localStorage.setItem("sv_name",fullname);
+      clearInterval(otpTimer);
+      toast(`Welcome, ${fullname}! 🎉`);
+      showShop();
+    } else { toast(d.error||"Incorrect OTP","err") }
+  } catch{ toast("Server unreachable","err") }
+  btn.disabled=false; btn.textContent="Verify & Login";
+}
+
+async function doLogout(){
+  try{ await fetch(`${API}/api/auth/logout`,{method:"POST",headers:{"X-Session":session}}) } catch{}
+  session=""; username=""; fullname="";
+  localStorage.removeItem("sv_token"); localStorage.removeItem("sv_user"); localStorage.removeItem("sv_name");
+  toast("Logged out"); updateNav();
+}
+
+/* ════════════════════════════════
+   STATS
+════════════════════════════════ */
+async function loadStats(){
+  try{
+    const d=await(await fetch(`${API}/api/stats`)).json();
+    document.getElementById("s-avail").textContent=d.available;
+    document.getElementById("s-sold").textContent=d.sold;
+    document.getElementById("s-plats").textContent=d.platforms.length;
+    document.getElementById("hero-avail").textContent=`${d.available} accounts live`;
+  } catch{}
+}
+
+/* ════════════════════════════════
+   YEARS
+════════════════════════════════ */
+async function loadYears(){
+  try{
+    const years=await(await fetch(`${API}/api/years`)).json();
+    const g=document.getElementById("year-grid");
+    if(!years.length){ g.innerHTML=`<div class="empty"><div class="empty-ico">📭</div><p>No accounts yet</p></div>`; return }
+    g.innerHTML=years.map((y,i)=>`
+      <div class="year-card" id="yc-${y.year}" onclick="selectYear(${y.year})"
+           style="animation-delay:${i*.05}s">
+        <div class="year-ping"></div>
+        <div class="year-num">${y.year}</div>
+        <div class="year-cnt">${y.count} available</div>
+        <div class="year-from">from ${inr(y.min_price)}</div>
+      </div>`).join("");
+  } catch{
+    document.getElementById("year-grid").innerHTML=
+      `<div class="empty"><p>⚠️ Can't reach backend at ${API}</p></div>`;
+  }
+}
+
+function selectYear(y){
+  document.querySelectorAll(".year-card").forEach(c=>c.classList.remove("active"));
+  document.getElementById(`yc-${y}`)?.classList.add("active");
+  document.getElementById("clear-year-btn").style.display="";
+  activeYear=y;
+  document.getElementById("acc-tag").textContent=`Class of ${y}`;
+  document.getElementById("acc-title").textContent=`Accounts from ${y}`;
+  document.getElementById("acc-section").scrollIntoView({behavior:"smooth"});
+  loadAccounts(); loadPlatformChips();
+}
+
+function clearYear(){
+  document.querySelectorAll(".year-card").forEach(c=>c.classList.remove("active"));
+  document.getElementById("clear-year-btn").style.display="none";
+  activeYear=null; activePlat="";
+  document.getElementById("acc-tag").textContent="All Accounts";
+  document.getElementById("acc-title").textContent="Available Now";
+  loadAccounts(); loadPlatformChips();
+}
+
+/* ════════════════════════════════
+   PLATFORM CHIPS
+════════════════════════════════ */
+async function loadPlatformChips(){
+  try{
+    let url=`${API}/api/accounts?`;
+    if(activeYear) url+=`year=${activeYear}`;
+    const accs=await(await fetch(url)).json();
+    const plats=[...new Set(accs.map(a=>a.platform))];
+    const bar=document.getElementById("filter-bar");
+    const sel=bar.querySelector(".sort-sel");
+    bar.innerHTML=`<button class="chip active" onclick="setPlatform(this,'')">All</button>`;
+    plats.forEach(p=>{
+      const b=document.createElement("button");
+      b.className="chip"; b.textContent=`${pIcon(p)} ${p}`;
+      b.onclick=function(){setPlatform(this,p)};
+      bar.appendChild(b);
+    });
+    bar.appendChild(sel);
+  } catch{}
+}
+
+function setPlatform(el,p){
+  document.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
+  el.classList.add("active"); activePlat=p; loadAccounts();
+}
+
+/* ════════════════════════════════
+   ACCOUNTS
+════════════════════════════════ */
+async function loadAccounts(){
+  document.getElementById("acc-grid").innerHTML=
+    `<div class="loading-wrap"><div class="spin"></div>Loading accounts...</div>`;
+  try{
+    const sort=document.getElementById("sort-sel")?.value||"id";
+    let url=`${API}/api/accounts?sort=${sort}`;
+    if(activeYear) url+=`&year=${activeYear}`;
+    if(activePlat) url+=`&platform=${encodeURIComponent(activePlat)}`;
+    accounts=await(await fetch(url)).json();
+    renderAccounts(accounts);
+  } catch{
+    document.getElementById("acc-grid").innerHTML=
+      `<div class="empty"><div class="empty-ico">⚠️</div><p>Failed to load. Backend down?</p></div>`;
+  }
+}
+
+function renderAccounts(list){
+  const g=document.getElementById("acc-grid");
+  if(!list.length){
+    g.innerHTML=`<div class="empty"><div class="empty-ico">📭</div><p>No accounts found</p></div>`;
+    return;
+  }
+  g.innerHTML=list.map((a,i)=>`
+    <div class="acc-card" style="animation-delay:${i*.05}s">
+      <div class="card-top">
+        <div class="plat-wrap">
+          <div class="plat-icon">${pIcon(a.platform)}</div>
+          <div>
+            <div class="plat-name">${a.platform}</div>
+            <div class="plat-id">Acc #${a.id}</div>
+          </div>
+        </div>
+        <div class="priv-badge ${a.privacy==='Public'?'priv-pub':'priv-prv'}">
+          ${a.privacy==='Public'?'🌐':'🔒'} ${a.privacy}
+        </div>
+      </div>
+      <div class="card-stats">
+        <div class="cs"><div class="cs-val" style="color:var(--gold2)">${fmt(a.followers)}</div><div class="cs-lbl">Followers</div></div>
+        <div class="cs"><div class="cs-val">${fmt(a.following)}</div><div class="cs-lbl">Following</div></div>
+        <div class="cs"><div class="cs-val">${a.posts}</div><div class="cs-lbl">Posts</div></div>
+      </div>
+      <div class="card-info">
+        <div class="card-date">📅 ${a.month} ${a.year}</div>
+        ${a.description?`<div class="card-desc">${a.description}</div>`:""}
+      </div>
+      <div class="card-bot">
+        <div><div class="card-price">${inr(a.price_inr)}</div><div class="card-price sub">INR</div></div>
+        <div class="card-btns">
+          <button class="btn btn-ghost btn-sm" onclick="viewDetail(${a.id})">Details</button>
+          <button class="btn btn-gold btn-sm" onclick="startOrder(${a.id})">Order</button>
+        </div>
+      </div>
+    </div>`).join("");
+}
+
+/* ════════════════════════════════
+   DETAIL MODAL
+════════════════════════════════ */
+async function viewDetail(aid){
+  openM("m-detail");
+  document.getElementById("md-body").innerHTML=
+    `<div class="loading-wrap"><div class="spin"></div>Loading...</div>`;
+  try{
+    const a=await(await fetch(`${API}/api/accounts/${aid}`)).json();
+    document.getElementById("md-title").textContent=`${pIcon(a.platform)} ${a.platform} Account`;
+    document.getElementById("md-sub").textContent=`Account #${a.id} · Created ${a.month} ${a.year}`;
+    document.getElementById("md-body").innerHTML=`
+      <div class="detail-grid">
+        <div class="dg"><div class="dg-val">${fmt(a.followers)}</div><div class="dg-lbl">Followers</div></div>
+        <div class="dg"><div class="dg-val" style="color:var(--text)">${fmt(a.following)}</div><div class="dg-lbl">Following</div></div>
+        <div class="dg"><div class="dg-val" style="color:var(--text)">${a.posts}</div><div class="dg-lbl">Posts</div></div>
+      </div>
+      <div class="detail-row"><span class="dr-k">Platform</span><span class="dr-v">${a.platform}</span></div>
+      <div class="detail-row"><span class="dr-k">Created</span><span class="dr-v">${a.month} ${a.year}</span></div>
+      <div class="detail-row"><span class="dr-k">Type</span><span class="dr-v">${a.privacy==='Public'?'🌐 Public':'🔒 Private'}</span></div>
+      <div class="detail-row"><span class="dr-k">Status</span><span class="dr-v" style="color:var(--green)">✅ Available</span></div>
+      ${a.description?`<div class="detail-row"><span class="dr-k">Description</span><span class="dr-v">${a.description}</span></div>`:""}
+      <div class="price-showcase">
+        <div class="price-big">${inr(a.price_inr)}</div>
+        <div class="price-hint">One-time purchase · Price in INR</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${a.screenshot?`<a href="${a.screenshot}" target="_blank" class="btn btn-ghost btn-full">📷 View Screenshot</a>`:""}
+        <button class="btn btn-gold btn-full" onclick="closeM('m-detail');startOrder(${a.id})">🛒 Place Order</button>
+        <a href="${BOT}" target="_blank" class="btn btn-outline btn-full">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-2.02 9.53c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.883.691z"/></svg>
+          Order via Telegram Bot
+        </a>
+      </div>`;
+  } catch{ document.getElementById("md-body").innerHTML=`<p style="color:var(--text3)">Failed to load.</p>` }
+}
+
+/* ════════════════════════════════
+   ORDER FLOW
+════════════════════════════════ */
+function startOrder(aid){
+  if(!session){ toast("Login to place orders","err"); showLogin(); return }
+  orderAccId=aid;
+  const a=accounts.find(x=>x.id==aid);
+  document.getElementById("mo-sub").textContent=a?`${a.platform} #${aid} · ${inr(a.price_inr)}`:`#${aid}`;
+  document.getElementById("o-name").value=fullname||"";
+  document.getElementById("o-note").value="";
+  document.getElementById("os1").style.display="";
+  document.getElementById("os2").style.display="none";
+  document.getElementById("sd1").classList.add("on");
+  document.getElementById("sd2").classList.remove("on");
+  openM("m-order");
+}
+
+function orderStep2(){
+  const name=document.getElementById("o-name").value.trim();
+  if(!name){toast("Enter your name","err");return}
+  const a=accounts.find(x=>x.id==orderAccId);
+  document.getElementById("o-summary").innerHTML=`
+    <div style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">Order Summary</div>
+    <div class="detail-row" style="font-size:13px;padding:8px 0"><span class="dr-k">Account</span><span class="dr-v">${a?a.platform:""} #${orderAccId}</span></div>
+    <div class="detail-row" style="font-size:13px;padding:8px 0"><span class="dr-k">Price</span><span class="dr-v" style="color:var(--gold2);font-weight:700">${a?inr(a.price_inr):"—"}</span></div>
+    <div class="detail-row" style="font-size:13px;padding:8px 0"><span class="dr-k">Buyer</span><span class="dr-v">${name}</span></div>
+    <div class="detail-row" style="font-size:13px;padding:8px 0;border:none"><span class="dr-k">Telegram</span><span class="dr-v">@${username}</span></div>`;
+  document.getElementById("os1").style.display="none";
+  document.getElementById("os2").style.display="";
+  document.getElementById("sd2").classList.add("on");
+}
+
+function orderBack(){
+  document.getElementById("os1").style.display="";
+  document.getElementById("os2").style.display="none";
+  document.getElementById("sd2").classList.remove("on");
+}
+
+async function doOrder(){
+  const btn=document.getElementById("place-btn");
+  btn.disabled=true; btn.textContent="Placing...";
+  try{
+    const r=await fetch(`${API}/api/order`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json","X-Session":session},
+      body:JSON.stringify({
+        account_id:orderAccId,
+        note:document.getElementById("o-note").value.trim()
+      })});
+    const d=await r.json();
+    if(d.success){
+      closeM("m-order");
+      toast(`✅ Order #${d.order_id} placed! Admin will contact you on Telegram.`);
+      loadYears(); loadStats(); loadAccounts();
+    } else { toast(d.error||"Order failed","err") }
+  } catch{ toast("Network error","err") }
+  btn.disabled=false; btn.textContent="✅ Confirm Order";
+}
+
+/* ════════════════════════════════
+   MY ORDERS
+════════════════════════════════ */
+async function openOrders(){
+  if(!session){toast("Login first","err");showLogin();return}
+  openM("m-orders");
+  document.getElementById("orders-body").innerHTML=
+    `<div class="loading-wrap"><div class="spin"></div>Loading...</div>`;
+  try{
+    const rows=await(await fetch(`${API}/api/my-orders`,{headers:{"X-Session":session}})).json();
+    if(!rows.length){
+      document.getElementById("orders-body").innerHTML=
+        `<div class="empty"><div class="empty-ico">📭</div><p>No orders yet</p></div>`; return;
+    }
+    const icons={pending:"⏳",completed:"✅",cancelled:"❌"};
+    const sc={pending:"sb-pending",completed:"sb-completed",cancelled:"sb-cancelled"};
+    document.getElementById("orders-body").innerHTML=`
+      <div class="orders-list">
+        ${rows.map(o=>`
+          <div class="order-row">
+            <div class="order-icon">${icons[o.status]||"❓"}</div>
+            <div class="order-info">
+              <div class="order-id">ORDER #${o.id} · ${o.source?.toUpperCase()||"—"}</div>
+              <div class="order-plat">${o.platform} <span style="color:var(--text3);font-size:12px">(${o.year})</span></div>
+              <div class="order-meta">${new Date(o.ordered_at).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"})}</div>
+            </div>
+            <div>
+              <div class="order-price">${inr(o.price_inr)}</div>
+              <div class="status-badge ${sc[o.status]||""}" style="margin-top:6px">${o.status}</div>
+            </div>
+          </div>`).join("")}
+      </div>`;
+  } catch{ document.getElementById("orders-body").innerHTML=`<p style="color:var(--text3)">Failed to load orders.</p>` }
+}
+
+/* ════════════════════════════════
+   INIT
+════════════════════════════════ */
+(async()=>{
+  // Verify stored session
+  if(session){
+    try{
+      const r=await fetch(`${API}/api/auth/me`,{headers:{"X-Session":session}});
+      if(!r.ok){ session=""; localStorage.removeItem("sv_token") }
+    } catch{ /* server down, keep session */ }
+  }
+  // Go to shop if already logged in OR skip login
+  if(session){ showShop() }
+  // else stay on login page
+  updateNav();
+})();
+</script>
+</body>
+</html>
